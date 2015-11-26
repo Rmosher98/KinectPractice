@@ -70,13 +70,14 @@ public partial class MainWindow : Window { public MainWindow() { InitailizeCompo
     {
         using(SkeletonFrame skeletonFrameData = e.OpenSkeletonFrame())
         {
+            ///???
             if(skeletonFrameData == null)
             {
                 return;
             }
 
+            ///???
             skeletonFrameData.CopySkeletonDataTo(allSkeletons);
-
             me = (from s in allSkeletons where s.TrackingState == SkeletonTrackingState.Tracked select s).FirstorDefault();
         }
     }
@@ -85,15 +86,17 @@ public partial class MainWindow : Window { public MainWindow() { InitailizeCompo
     {
         using(DepthImageFrame depth = e.OpenDepthImageFrame())
         {
+            ///Makes sure that the camera is working or it will boot out
             if(depth == null || sensor == null)
             {
                 return;
             }
 
+            ///Used for the head tracking 
             DepthImagePoint headDepthPoint = depth.MapFromSkeletonPoint(me.Joints[JointType.Head].Position);
-
             ColorImagePoint headColorPoint = depth.MapToColorImagePoint(headDepthPoint.X, headDepthPoint.Y, ColorImageFormat.RgbResolution640x480Fps30);
 
+            ///Used to place an image over the head position
             Canvas.SetLeft(face, headColorPoint.X - face.Width / 2);
             Canvas.SetTop(face, headColorPoint.Y - face.Height / 2);
         }
